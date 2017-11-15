@@ -48,5 +48,49 @@
   <!-- The main bundle js is generated during the build process -->
   <script src="build/main.js"></script>
 
+  <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCnNzxXvikLKjikTlNmcIrBnI3c2LN-dYw",
+      authDomain: "pwaexamp.firebaseapp.com",
+      databaseURL: "https://pwaexamp.firebaseio.com",
+      projectId: "pwaexamp",
+      storageBucket: "pwaexamp.appspot.com",
+      messagingSenderId: "15400100509"
+    };
+    firebase.initializeApp(config);
+
+     // Retrieve Firebase Messaging object.
+      const messaging = firebase.messaging();
+      messaging.requestPermission()
+      .then(function() {
+        console.log('Notification permission granted.');
+      
+      messaging.getToken()
+      .then(function(currentToken) {
+        if (currentToken) {
+          console.log("token:" + currentToken );
+        } else {
+          // Show permission request.
+          console.log('No Instance ID token available. Request permission to generate one.');
+        }
+      })
+      .catch(function(err) {
+        console.log('An error occurred while retrieving token. ', err);
+      });
+      //recibiendo mensaje en primer plano.
+      messaging.onMessage(function(payload) {
+          console.log("Message received. ", payload);
+          alert(payload.notification.body);
+        });
+      })
+      .catch(function(err) {
+        console.log('Unable to get permission to notify.', err);
+      });
+  </script>
+
 </body>
 </html>
